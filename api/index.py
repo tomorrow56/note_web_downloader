@@ -26,12 +26,24 @@ app.register_blueprint(download_bp, url_prefix='/api')
 app.register_blueprint(health_bp, url_prefix='/api')
 app.register_blueprint(debug_bp, url_prefix='/api')
 
-# uncomment if you need to use database
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
+# Database configuration (disabled for Vercel)
+if os.environ.get('VERCEL'):
+    # Use in-memory database for Vercel
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+else:
+    # Use file-based database for local development
+    db_path = os.path.join(project_root, 'src', 'database', 'app.db')
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-with app.app_context():
-    db.create_all()
+
+try:
+    with app.app_context():
+        db.create_all()
+except Exception as e:
+    print(f"Database initialization warning: {e}")
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -52,3 +64,6 @@ def serve(path):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
+
+# Export app for Vercel
+# The app is automatically used by Vercel when deployed
