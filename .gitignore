@@ -4,5 +4,11 @@ __pycache__/
 *.pyo
 *.egg-info/
 .DS_Store
+._*
 *.db
 .env
+build.sh
+gunicorn.conf.py
+render.yaml
+runtime.txt
+QiitaダウンローダーWebアプリケーション.md
