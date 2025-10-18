@@ -1,7 +1,9 @@
 import os
 import sys
-# DON'T CHANGE THIS !!!
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+# Get the project root directory
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
@@ -11,7 +13,9 @@ from src.routes.download import download_bp
 from src.routes.health import health_bp
 from src.routes.debug import debug_bp
 
-app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
+# Set static folder path
+static_folder = os.path.join(project_root, 'src', 'static')
+app = Flask(__name__, static_folder=static_folder)
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
 # CORS設定を追加
