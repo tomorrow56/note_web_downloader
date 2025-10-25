@@ -2,6 +2,10 @@
 
 note.comの記事をMarkdown形式でダウンロードし、画像も含めてZIPファイルとして配信するWebアプリケーションです。
 
+## デプロイ（Vercel）
+
+- 公開URL: https://note-web-downloader.vercel.app/
+
 ## 機能
 
 - 🔗 **noteのURL入力**: 記事のURLを入力するだけで簡単ダウンロード
